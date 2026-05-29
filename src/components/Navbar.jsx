@@ -102,37 +102,86 @@ export function Navbar() {
       </div>
 
       {/* Mobile Drawer Overlay */}
-      {isMenuOpen && (
-        <div className="fixed inset-0 top-[70px] z-[980] bg-white/98 backdrop-blur-lg flex flex-col items-center justify-center lg:hidden transition-all duration-300 border-t border-primary/5">
-          <ul className="flex flex-col items-center space-y-6 text-center mb-8">
-            {navLinks.map((link) => {
-              const isActive = location.pathname === link.path;
-              return (
-                <li key={link.path}>
-                  <button
-                    onClick={() => handleLinkClick(link.path)}
-                    className={`text-lg font-serif tracking-[0.15em] transition-colors focus:outline-none ${
-                      isActive ? "text-gold font-bold" : "text-primary/80 hover:text-primary"
-                    }`}
-                  >
-                    {link.label}
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
+      <div
+        className={`fixed inset-0 z-[1000] lg:hidden transition-all duration-500 ${
+          isMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
+      >
+        {/* Dark Backdrop */}
+        <div
+          className="absolute inset-0 bg-primary/40 backdrop-blur-sm"
+          onClick={() => setIsMenuOpen(false)}
+        />
 
-          <button
-            onClick={() => {
-              setIsMenuOpen(false);
-              openQuoteModal();
-            }}
-            className="px-8 py-3 bg-gold hover:bg-primary text-primary hover:text-white text-xs uppercase tracking-[0.15em] transition-all duration-300 font-bold"
-          >
-            Book Free Consultation
-          </button>
+        {/* Sliding Panel */}
+        <div
+          className={`absolute top-0 right-0 h-full w-[80%] max-w-[380px] bg-[#FAF7F2] shadow-2xl z-10 flex flex-col justify-between p-8 transition-transform duration-500 ease-out border-l border-gold/15 ${
+            isMenuOpen ? "translate-x-0" : "translate-x-full"
+          }`}
+        >
+          {/* Header */}
+          <div className="flex items-center justify-between border-b border-primary/5 pb-6">
+            <div className="flex flex-col items-start">
+              <span className="font-serif text-lg font-bold tracking-[0.2em] text-primary">
+                SEAFOAM
+              </span>
+              <span className="font-sans text-[0.55rem] tracking-[0.45em] text-gold uppercase -mt-1 font-semibold">
+                Interiors
+              </span>
+            </div>
+            <button
+              onClick={() => setIsMenuOpen(false)}
+              className="p-2 text-primary hover:text-gold transition-colors focus:outline-none"
+              aria-label="Close Mobile Menu"
+            >
+              <X size={20} />
+            </button>
+          </div>
+
+          {/* Nav Links scrollable */}
+          <div className="flex-grow overflow-y-auto py-8">
+            <ul className="flex flex-col space-y-5 font-sans">
+              {navLinks.map((link) => {
+                const isActive = location.pathname === link.path;
+                return (
+                  <li key={link.path}>
+                    <button
+                      onClick={() => handleLinkClick(link.path)}
+                      className={`text-sm uppercase tracking-[0.2em] font-semibold transition-colors focus:outline-none block w-full text-left py-1 ${
+                        isActive ? "text-gold pl-2 border-l-2 border-gold" : "text-primary/75 hover:text-primary"
+                      }`}
+                    >
+                      {link.label}
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+
+          {/* Bottom Actions and Contact */}
+          <div className="border-t border-primary/5 pt-6 space-y-6">
+            <button
+              onClick={() => {
+                setIsMenuOpen(false);
+                openQuoteModal();
+              }}
+              className="w-full py-3.5 bg-primary hover:bg-gold text-white hover:text-primary text-xs uppercase tracking-[0.15em] transition-all duration-300 font-bold shadow-md rounded-sm"
+            >
+              Book Free Consultation
+            </button>
+            
+            <div className="text-center font-sans">
+              <span className="text-[0.55rem] text-primary/45 uppercase tracking-[0.2em] block mb-1">
+                Direct Call Coordinator
+              </span>
+              <a href="tel:+918074690803" className="text-xs font-bold text-gold hover:text-primary transition-colors">
+                +91 80746 90803
+              </a>
+            </div>
+          </div>
         </div>
-      )}
+      </div>
     </header>
   );
 }
